@@ -14,4 +14,7 @@ chmod +x seerun.sh
 
 # confirm before executing commands from 2 to 4 in file sample_cmds.txt
 ./seerun.sh -ec sample_cmds.txt 2 4
+
+# show commands from 2 to end of file sample_cmds.txt
+./seerun.sh sample_cmds.txt 2 $
 ```
