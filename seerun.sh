@@ -1,4 +1,4 @@
-tmpfile="tmp_file"
+tmpfile="tmpfile"
 
 function show_help ()  
 {
@@ -54,15 +54,15 @@ fi
 start=$2
 end=$3
 
-if [ "$start" -gt "$end" ]; then
-	echo "Start line cannot be greater than end."
+if [ -z $start ]; then
+	echo "No lines specified, so listing full file..."
+	cat -n "$file"
 	clean_up
 	exit 0
 fi
 
-if [ -z $start ]; then
-	echo "No lines specified, so listing full file..."
-	cat $file
+if [ "$start" -gt "$end" ]; then
+	echo "Start line cannot be greater than end."
 	clean_up
 	exit 0
 fi
@@ -72,10 +72,8 @@ if [ -z $end ]; then
 	end=$start
 fi
 
-sed -n "$start,$end"p $file > $tmpfile
-#echo $lines
-#cat $file | sed -n "$start,$end"p
-#sed -n "$start,$end"p $file | while read $line || [[ -n $line ]];
+sed -n "$start,$end"p "$file" > $tmpfile
+
 line_count=$start
 cat "$tmpfile" | while read line || [[ -n $line ]]; do
 
@@ -93,7 +91,7 @@ cat "$tmpfile" | while read line || [[ -n $line ]]; do
 		eval "$(echo $line)"
 	else
 		echo ""
-		echo "-> $line"
+		echo "-> $line_count: $line"
 		echo -n "Run above statemet? (yes is default) "
 		read should_run</dev/tty
 
