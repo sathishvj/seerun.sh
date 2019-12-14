@@ -78,13 +78,39 @@ sed -n "$start,$end"p "$file" > $tmpfile
 line_count=$start
 cat "$tmpfile" | while read line || [[ -n $line ]]; do
 
+	# only showing statements
 	if [[ ! $execute == "1" ]]; then
 		echo "$line_count: $line"
 		let "line_count+=1"
 		continue
 	fi
 
-	#echo $check
+
+	# if command starts with #, continue
+	if [[ $line =~ ^\s*# ]]; then
+		echo ""
+		echo "-> Skipping comment: $line_count: $line"
+		let "line_count+=1"
+		continue
+	fi
+
+	# if line is empty, continue
+	if [[ $line =~ ^\s*$ ]]; then
+		echo ""
+		echo "-> Skipping empty line: $line_count: $line"
+		let "line_count+=1"
+		continue
+	fi
+
+	# if command contains "#needs_param", then exit without executing.
+	if [[ $line =~ .*#needs_param.* ]]; then
+		echo ""
+		echo "-> Command needs param. Exiting without executing."
+		echo "$line_count: $line"
+		exit 0
+	fi
+
+	# executing statements
 	if [[ $check == "0" ]]; then
 		echo ""
 		echo "-> Running:"
