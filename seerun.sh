@@ -76,10 +76,12 @@ sed -n "$start,$end"p $file > $tmpfile
 #echo $lines
 #cat $file | sed -n "$start,$end"p
 #sed -n "$start,$end"p $file | while read $line || [[ -n $line ]];
+line_count=$start
 cat "$tmpfile" | while read line || [[ -n $line ]]; do
 
 	if [[ ! $execute == "1" ]]; then
-		echo "$line"
+		echo "$line_count $line"
+		let "line_count+=1"
 		continue
 	fi
 
