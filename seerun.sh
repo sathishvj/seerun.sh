@@ -80,7 +80,7 @@ line_count=$start
 cat "$tmpfile" | while read line || [[ -n $line ]]; do
 
 	if [[ ! $execute == "1" ]]; then
-		echo "$line_count $line"
+		echo "$line_count: $line"
 		let "line_count+=1"
 		continue
 	fi
@@ -89,16 +89,17 @@ cat "$tmpfile" | while read line || [[ -n $line ]]; do
 	if [[ $check == "0" ]]; then
 		echo ""
 		echo "-> Running:"
-		echo "$line"
+		echo "$line_count: $line"
 		eval "$(echo $line)"
 	else
+		echo ""
 		echo "-> $line"
 		echo -n "Run above statemet? (yes is default) "
 		read should_run</dev/tty
 
 		if [ "$should_run" = "y" ] || [ "$should_run" = "Y" ] || [ -z "$should_run" ]; then
 			echo "-> Running:"
-			echo "$line"
+			echo "$line_count: $line"
 			eval "$(echo $line)"
 		else
 			echo "Exiting"
@@ -106,6 +107,7 @@ cat "$tmpfile" | while read line || [[ -n $line ]]; do
 			exit 0
 		fi
 	fi
+	let "line_count+=1"
 
 done 
 
