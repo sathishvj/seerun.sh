@@ -61,15 +61,15 @@ if [ -z $start ]; then
 	exit 0
 fi
 
+# if end is not mentioned, then it is equal to start
+if [ -z $end ]; then
+	end=$start
+fi
+
 if [ "$start" -gt "$end" ]; then
 	echo "Start line cannot be greater than end."
 	clean_up
 	exit 0
-fi
-
-# if end is not mentioned, then it is equal to start
-if [ -z $end ]; then
-	end=$start
 fi
 
 sed -n "$start,$end"p "$file" > $tmpfile
