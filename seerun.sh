@@ -66,7 +66,8 @@ if [ -z $end ]; then
 	end=$start
 fi
 
-if [ "$start" -gt "$end" ]; then
+#if [ "$end" != "$" ] && [ "$start" -gt "$end" ]; then
+if [ "$end" != "$" ] && [ "$start" -gt "$end" ]; then
 	echo "Start line cannot be greater than end."
 	clean_up
 	exit 0
